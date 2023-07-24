@@ -1,0 +1,355 @@
+syntax = "proto3";
+
+package realworld.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "kratos-demo/api/realworld/v1;v1";
+
+// The greeting service definition.
+service RealWorld {
+  // Login
+  rpc Login(LoginRequest) returns (User) {
+    option (google.api.http) = {
+      post: "/api/users/login"
+      body: "*"
+    };
+  }
+
+  // Register
+  rpc Register(RegisterRequest) returns (User) {
+    option (google.api.http) = {
+      post: "/api/users"
+      body: "*"
+    };
+  }
+
+  // Get Current User
+  rpc GetCurrentUser(EmptyRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/api/user"
+    };
+  }
+
+  // Update User
+  rpc UpdateUser(UpdateUserRequest) returns (User) {
+    option (google.api.http) = {
+      put: "/api/user"
+      body: "*"
+    };
+  }
+
+  // Get Profile
+  rpc GetProfile(GetProfileRequest) returns (Profile) {
+    option (google.api.http) = {
+      get: "/api/profiles/{username}"
+    };
+  }
+
+  // Follow User
+  rpc FollowUser(FollowUserRequest) returns (Profile) {
+    option (google.api.http) = {
+      post: "/api/profiles/{username}/follow"
+      body: "*"
+    };
+  }
+
+  // Unfollow User
+  rpc UnfollowUser(UnfollowUserRequest) returns (Profile) {
+    option (google.api.http) = {
+      delete: "/api/profiles/{username}/follow"
+    };
+  }
+
+  // List Articles
+  rpc ListArticles(ListArticlesRequest) returns (Articles) {
+    option (google.api.http) = {
+      get: "/api/articles"
+    };
+  }
+
+  // Feed Articles
+  rpc FeedArticles(FeedArticlesRequest) returns (Articles) {
+    option (google.api.http) = {
+      get: "/api/articles/feed"
+    };
+  }
+
+  // Get Articles
+  rpc GetArticles(GetArticlesRequest) returns (Article) {
+    option (google.api.http) = {
+      get: "/api/articles/{slug}"
+    };
+  }
+
+  // Create Article
+  rpc CreateArticle(CreateArticleRequest) returns (Article) {
+    option (google.api.http) = {
+      post: "/api/articles"
+      body: "*"
+    };
+  }
+
+  // Update Article
+  rpc UpdateArticle(UpdateArticleRequest) returns (Article) {
+    option (google.api.http) = {
+      put: "/api/articles/{slug}"
+      body: "*"
+    };
+  }
+
+  // Delete Article
+  rpc DeleteArticle(GetArticlesRequest) returns (EmptyReply) {
+    option (google.api.http) = {
+      delete: "/api/articles/{slug}"
+    };
+  }
+
+  // Add Comments to an Article
+  rpc AddCommentsToArticle(AddCommentsToArticleRequest) returns (Comment) {
+    option (google.api.http) = {
+      post: "/api/articles/{slug}/comments"
+      body: "*"
+    };
+  }
+
+  // Get Comments from an Article
+  rpc GetCommentsFromArticle(GetCommentsFromArticleRequest) returns (Comments) {
+    option (google.api.http) = {
+      get: "/api/articles/{slug}/comments"
+    };
+  }
+
+  // Delete Comment from an Article
+  rpc DeleteCommentFromArticle(DeleteCommentFromArticleRequest) returns (EmptyReply) {
+    option (google.api.http) = {
+      delete: "/api/articles/{slug}/comments/{id}"
+    };
+  }
+
+  // Favorite Article
+  rpc FavoriteArticle(FavoriteArticleRequest) returns (Article) {
+    option (google.api.http) = {
+      post: "/api/articles/{slug}/favorite"
+      body: "*"
+    };
+  }
+
+  // Unfavorite Article
+  rpc UnfavoriteArticle(UnfavoriteArticleRequest) returns (Article) {
+    option (google.api.http) = {
+      delete: "/api/articles/{slug}/favorite"
+    };
+  }
+
+  // Get Tags
+  rpc GetTags(EmptyRequest) returns (Tags) {
+    option (google.api.http) = {
+      get: "/api/tags"
+    };
+  }
+}
+
+// User
+message User {
+  message Data {
+    string email = 1;
+    string token = 2;
+    string username = 3;
+    string bio = 4;
+    string image = 5;
+  }
+  Data user = 1;
+}
+
+// Profile
+message Profile {
+  message Data {
+    string username = 1;
+    string bio = 2;
+    string image = 3;
+    bool following = 4;
+  }
+  Data profile = 1;
+}
+
+// Single Article
+message Article {
+  message Data {
+    string slug = 1;
+    string title = 2;
+    string description = 3;
+    string body = 4;
+    repeated string tagList = 5;
+    google.protobuf.Timestamp createdAt = 6;
+    google.protobuf.Timestamp updatedAt = 7;
+    bool favorited = 8;
+    int32 favoritesCount = 9;
+    Profile author = 10;
+  }
+  Data article = 1;
+}
+
+// Multiple Articles
+message Articles {
+  repeated Article.Data articles = 1;
+  int32 articlesCount = 2;
+}
+
+// Single Comment
+message Comment {
+  message Data {
+    int32 id = 1;
+    string body = 2;
+    google.protobuf.Timestamp createdAt = 3;
+    google.protobuf.Timestamp updatedAt = 4;
+    Profile author = 5;
+  }
+  Data comment = 1;
+}
+
+// Multiple Comments
+message Comments {
+  repeated Comment.Data comments = 1;
+}
+
+// List of Tags
+message Tags {
+  message Data {
+    repeated string tags = 1;
+  }
+  Data tags = 1;
+}
+
+
+// LoginRequest
+message LoginRequest {
+  message User {
+    string email = 1;
+    string password = 2;
+  }
+  User user = 1;
+}
+
+// RegisterRequest
+message RegisterRequest {
+  message User {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+  }
+  User user = 1;
+}
+
+// UpdateUserRequest
+message UpdateUserRequest {
+  message User {
+    string email = 1;
+    string image = 2;
+    string bio = 3;
+  }
+  User user = 1;
+}
+
+// GetProfileRequest
+message GetProfileRequest {
+  string username = 1;
+}
+
+// FollowUserRequest
+message FollowUserRequest {
+  string username = 1;
+}
+
+// UnfollowUserRequest
+message UnfollowUserRequest {
+  string username = 1;
+}
+
+// ListArticlesRequest
+message ListArticlesRequest {
+  string tag = 1;
+  string author = 2;
+  string favorited = 3;
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+// FeedArticlesRequest
+message FeedArticlesRequest {
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+// GetArticlesRequest
+message GetArticlesRequest {
+  string slug = 1;
+}
+
+// CreateArticleRequest
+message CreateArticleRequest {
+  message Article {
+    string title = 1;
+    string description = 2;
+    string body = 3;
+    repeated string tagList = 4;
+  }
+  Article article = 1;
+}
+
+// UpdateArticleRequest
+message UpdateArticleRequest {
+  message Article {
+    string title = 1;
+    string description = 2;
+    string body = 3;
+    repeated string tagList = 4;
+  }
+  Article article = 1;
+  string slug = 2;
+}
+
+// DeleteArticleRequest
+message DeleteArticleRequest {
+  string slug = 1;
+}
+
+// AddCommentsToArticleRequest
+message AddCommentsToArticleRequest {
+  message Comment {
+    string body = 1;
+  }
+  Comment comment = 1;
+  string slug = 2;
+}
+
+// GetCommentsFromArticleRequest
+message GetCommentsFromArticleRequest {
+  string slug = 1;
+}
+
+// DeleteCommentFromArticleRequest
+message DeleteCommentFromArticleRequest {
+  string slug = 1;
+  int32 id = 2;
+}
+
+// FavoriteArticleRequest
+message FavoriteArticleRequest {
+  string slug = 1;
+}
+
+// UnfavoriteArticleRequest
+message UnfavoriteArticleRequest {
+  string slug = 1;
+}
+
+
+// EmptyRequest
+message EmptyRequest {
+}
+
+// EmptyReply
+message EmptyReply {
+}

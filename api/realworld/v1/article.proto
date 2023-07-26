@@ -8,60 +8,7 @@ import "google/protobuf/timestamp.proto";
 option go_package = "kratos-demo/api/realworld/v1;v1";
 
 // The greeting service definition.
-service RealWorld {
-  // Login
-  rpc Login(LoginRequest) returns (User) {
-    option (google.api.http) = {
-      post: "/api/users/login"
-      body: "*"
-    };
-  }
-
-  // Register
-  rpc Register(RegisterRequest) returns (User) {
-    option (google.api.http) = {
-      post: "/api/users"
-      body: "*"
-    };
-  }
-
-  // Get Current User
-  rpc GetCurrentUser(EmptyRequest) returns (User) {
-    option (google.api.http) = {
-      get: "/api/user"
-    };
-  }
-
-  // Update User
-  rpc UpdateUser(UpdateUserRequest) returns (User) {
-    option (google.api.http) = {
-      put: "/api/user"
-      body: "*"
-    };
-  }
-
-  // Get Profile
-  rpc GetProfile(GetProfileRequest) returns (Profile) {
-    option (google.api.http) = {
-      get: "/api/profiles/{username}"
-    };
-  }
-
-  // Follow User
-  rpc FollowUser(FollowUserRequest) returns (Profile) {
-    option (google.api.http) = {
-      post: "/api/profiles/{username}/follow"
-      body: "*"
-    };
-  }
-
-  // Unfollow User
-  rpc UnfollowUser(UnfollowUserRequest) returns (Profile) {
-    option (google.api.http) = {
-      delete: "/api/profiles/{username}/follow"
-    };
-  }
-
+service Article {
   // List Articles
   rpc ListArticles(ListArticlesRequest) returns (Articles) {
     option (google.api.http) = {
@@ -77,14 +24,14 @@ service RealWorld {
   }
 
   // Get Articles
-  rpc GetArticles(GetArticlesRequest) returns (Article) {
+  rpc GetArticles(GetArticlesRequest) returns (ArticleReply) {
     option (google.api.http) = {
       get: "/api/articles/{slug}"
     };
   }
 
   // Create Article
-  rpc CreateArticle(CreateArticleRequest) returns (Article) {
+  rpc CreateArticle(CreateArticleRequest) returns (ArticleReply) {
     option (google.api.http) = {
       post: "/api/articles"
       body: "*"
@@ -92,7 +39,7 @@ service RealWorld {
   }
 
   // Update Article
-  rpc UpdateArticle(UpdateArticleRequest) returns (Article) {
+  rpc UpdateArticle(UpdateArticleRequest) returns (ArticleReply) {
     option (google.api.http) = {
       put: "/api/articles/{slug}"
       body: "*"
@@ -129,7 +76,7 @@ service RealWorld {
   }
 
   // Favorite Article
-  rpc FavoriteArticle(FavoriteArticleRequest) returns (Article) {
+  rpc FavoriteArticle(FavoriteArticleRequest) returns (ArticleReply) {
     option (google.api.http) = {
       post: "/api/articles/{slug}/favorite"
       body: "*"
@@ -137,7 +84,7 @@ service RealWorld {
   }
 
   // Unfavorite Article
-  rpc UnfavoriteArticle(UnfavoriteArticleRequest) returns (Article) {
+  rpc UnfavoriteArticle(UnfavoriteArticleRequest) returns (ArticleReply) {
     option (google.api.http) = {
       delete: "/api/articles/{slug}/favorite"
     };
@@ -149,18 +96,6 @@ service RealWorld {
       get: "/api/tags"
     };
   }
-}
-
-// User
-message User {
-  message Data {
-    string email = 1;
-    string token = 2;
-    string username = 3;
-    string bio = 4;
-    string image = 5;
-  }
-  Data user = 1;
 }
 
 // Profile
@@ -175,7 +110,7 @@ message Profile {
 }
 
 // Single Article
-message Article {
+message ArticleReply {
   message Data {
     string slug = 1;
     string title = 2;
@@ -193,7 +128,7 @@ message Article {
 
 // Multiple Articles
 message Articles {
-  repeated Article.Data articles = 1;
+  repeated ArticleReply.Data articles = 1;
   int32 articlesCount = 2;
 }
 
@@ -220,51 +155,6 @@ message Tags {
     repeated string tags = 1;
   }
   Data tags = 1;
-}
-
-
-// LoginRequest
-message LoginRequest {
-  message User {
-    string email = 1;
-    string password = 2;
-  }
-  User user = 1;
-}
-
-// RegisterRequest
-message RegisterRequest {
-  message User {
-    string username = 1;
-    string email = 2;
-    string password = 3;
-  }
-  User user = 1;
-}
-
-// UpdateUserRequest
-message UpdateUserRequest {
-  message User {
-    string email = 1;
-    string image = 2;
-    string bio = 3;
-  }
-  User user = 1;
-}
-
-// GetProfileRequest
-message GetProfileRequest {
-  string username = 1;
-}
-
-// FollowUserRequest
-message FollowUserRequest {
-  string username = 1;
-}
-
-// UnfollowUserRequest
-message UnfollowUserRequest {
-  string username = 1;
 }
 
 // ListArticlesRequest

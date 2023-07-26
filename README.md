@@ -52,9 +52,9 @@ docker run --rm -p 8000:8000 -p 9000:9000 -v </path/to/your/configs>:/data/conf 
 
 ## RealWorld
 ```bash
-kratos proto add api/realworld/realworld.proto
-kratos proto client api
-kratos proto server api/realworld/realworld.proto -t internal/service
+kratos proto add api/realworld/v1/realworld.proto
+kratos proto client api/realworld/v1/realworld.proto
+kratos proto server api/realworld/v1/realworld.proto -t internal/service
 
 # wire
 cd cmd/realworld

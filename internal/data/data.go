@@ -5,10 +5,11 @@ import (
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"kratos-demo/internal/biz"
 	"kratos-demo/internal/conf"
 )
 
-var ProviderSet = wire.NewSet(NewData, NewDB)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
 
 // Data .
 type Data struct {
@@ -24,7 +25,7 @@ func NewData(c *conf.Data, logger log.Logger, db *gorm.DB) (*Data, func(), error
 }
 
 func NewDB(c *conf.Data) *gorm.DB {
-	db, err := gorm.Open(mysql.Open("root:Lyy520..@tcp(192.168.44.20:3306)/realworld?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{
+	db, err := gorm.Open(mysql.Open(c.Database.Source), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
@@ -35,7 +36,9 @@ func NewDB(c *conf.Data) *gorm.DB {
 }
 
 func InitDB(db *gorm.DB) {
-	if err := db.AutoMigrate(); err != nil {
+	if err := db.AutoMigrate(
+		&biz.User{},
+	); err != nil {
 		panic(err)
 	}
 }

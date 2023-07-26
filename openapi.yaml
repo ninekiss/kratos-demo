@@ -3,16 +3,16 @@
 
 openapi: 3.0.3
 info:
-    title: RealWorld API
+    title: Article API
     description: The greeting service definition.
     version: 0.0.1
 paths:
     /api/articles:
         get:
             tags:
-                - RealWorld
+                - Article
             description: List Articles
-            operationId: RealWorld_ListArticles
+            operationId: Article_ListArticles
             parameters:
                 - name: tag
                   in: query
@@ -51,9 +51,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         post:
             tags:
-                - RealWorld
+                - Article
             description: Create Article
-            operationId: RealWorld_CreateArticle
+            operationId: Article_CreateArticle
             requestBody:
                 content:
                     application/json:
@@ -66,7 +66,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Article'
+                                $ref: '#/components/schemas/ArticleReply'
                 default:
                     description: Default error response
                     content:
@@ -76,9 +76,9 @@ paths:
     /api/articles/feed:
         get:
             tags:
-                - RealWorld
+                - Article
             description: Feed Articles
-            operationId: RealWorld_FeedArticles
+            operationId: Article_FeedArticles
             parameters:
                 - name: limit
                   in: query
@@ -106,9 +106,9 @@ paths:
     /api/articles/{slug}:
         get:
             tags:
-                - RealWorld
+                - Article
             description: Get Articles
-            operationId: RealWorld_GetArticles
+            operationId: Article_GetArticles
             parameters:
                 - name: slug
                   in: path
@@ -121,7 +121,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Article'
+                                $ref: '#/components/schemas/ArticleReply'
                 default:
                     description: Default error response
                     content:
@@ -130,9 +130,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         put:
             tags:
-                - RealWorld
+                - Article
             description: Update Article
-            operationId: RealWorld_UpdateArticle
+            operationId: Article_UpdateArticle
             parameters:
                 - name: slug
                   in: path
@@ -151,7 +151,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Article'
+                                $ref: '#/components/schemas/ArticleReply'
                 default:
                     description: Default error response
                     content:
@@ -160,9 +160,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         delete:
             tags:
-                - RealWorld
+                - Article
             description: Delete Article
-            operationId: RealWorld_DeleteArticle
+            operationId: Article_DeleteArticle
             parameters:
                 - name: slug
                   in: path
@@ -185,9 +185,9 @@ paths:
     /api/articles/{slug}/comments:
         get:
             tags:
-                - RealWorld
+                - Article
             description: Get Comments from an Article
-            operationId: RealWorld_GetCommentsFromArticle
+            operationId: Article_GetCommentsFromArticle
             parameters:
                 - name: slug
                   in: path
@@ -209,9 +209,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         post:
             tags:
-                - RealWorld
+                - Article
             description: Add Comments to an Article
-            operationId: RealWorld_AddCommentsToArticle
+            operationId: Article_AddCommentsToArticle
             parameters:
                 - name: slug
                   in: path
@@ -240,9 +240,9 @@ paths:
     /api/articles/{slug}/comments/{id}:
         delete:
             tags:
-                - RealWorld
+                - Article
             description: Delete Comment from an Article
-            operationId: RealWorld_DeleteCommentFromArticle
+            operationId: Article_DeleteCommentFromArticle
             parameters:
                 - name: slug
                   in: path
@@ -271,9 +271,9 @@ paths:
     /api/articles/{slug}/favorite:
         post:
             tags:
-                - RealWorld
+                - Article
             description: Favorite Article
-            operationId: RealWorld_FavoriteArticle
+            operationId: Article_FavoriteArticle
             parameters:
                 - name: slug
                   in: path
@@ -292,7 +292,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Article'
+                                $ref: '#/components/schemas/ArticleReply'
                 default:
                     description: Default error response
                     content:
@@ -301,9 +301,9 @@ paths:
                                 $ref: '#/components/schemas/Status'
         delete:
             tags:
-                - RealWorld
+                - Article
             description: Unfavorite Article
-            operationId: RealWorld_UnfavoriteArticle
+            operationId: Article_UnfavoriteArticle
             parameters:
                 - name: slug
                   in: path
@@ -316,87 +316,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Article'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /api/profiles/{username}:
-        get:
-            tags:
-                - RealWorld
-            description: Get Profile
-            operationId: RealWorld_GetProfile
-            parameters:
-                - name: username
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Profile'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /api/profiles/{username}/follow:
-        post:
-            tags:
-                - RealWorld
-            description: Follow User
-            operationId: RealWorld_FollowUser
-            parameters:
-                - name: username
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/FollowUserRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Profile'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-        delete:
-            tags:
-                - RealWorld
-            description: Unfollow User
-            operationId: RealWorld_UnfollowUser
-            parameters:
-                - name: username
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Profile'
+                                $ref: '#/components/schemas/ArticleReply'
                 default:
                     description: Default error response
                     content:
@@ -406,9 +326,9 @@ paths:
     /api/tags:
         get:
             tags:
-                - RealWorld
+                - Article
             description: Get Tags
-            operationId: RealWorld_GetTags
+            operationId: Article_GetTags
             responses:
                 "200":
                     description: OK
@@ -416,99 +336,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Tags'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /api/user:
-        get:
-            tags:
-                - RealWorld
-            description: Get Current User
-            operationId: RealWorld_GetCurrentUser
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-        put:
-            tags:
-                - RealWorld
-            description: Update User
-            operationId: RealWorld_UpdateUser
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/UpdateUserRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /api/users:
-        post:
-            tags:
-                - RealWorld
-            description: Register
-            operationId: RealWorld_Register
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/RegisterRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
-                default:
-                    description: Default error response
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Status'
-    /api/users/login:
-        post:
-            tags:
-                - RealWorld
-            description: Login
-            operationId: RealWorld_Login
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/LoginRequest'
-                required: true
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/User'
                 default:
                     description: Default error response
                     content:
@@ -530,13 +357,13 @@ components:
             properties:
                 body:
                     type: string
-        Article:
+        ArticleReply:
             type: object
             properties:
                 article:
-                    $ref: '#/components/schemas/Article_Data'
+                    $ref: '#/components/schemas/ArticleReply_Data'
             description: Single Article
-        Article_Data:
+        ArticleReply_Data:
             type: object
             properties:
                 slug:
@@ -570,7 +397,7 @@ components:
                 articles:
                     type: array
                     items:
-                        $ref: '#/components/schemas/Article_Data'
+                        $ref: '#/components/schemas/ArticleReply_Data'
                 articlesCount:
                     type: integer
                     format: int32
@@ -634,12 +461,6 @@ components:
                 slug:
                     type: string
             description: FavoriteArticleRequest
-        FollowUserRequest:
-            type: object
-            properties:
-                username:
-                    type: string
-            description: FollowUserRequest
         GoogleProtobufAny:
             type: object
             properties:
@@ -648,19 +469,6 @@ components:
                     description: The type of the serialized message.
             additionalProperties: true
             description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
-        LoginRequest:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/LoginRequest_User'
-            description: LoginRequest
-        LoginRequest_User:
-            type: object
-            properties:
-                email:
-                    type: string
-                password:
-                    type: string
         Profile:
             type: object
             properties:
@@ -678,21 +486,6 @@ components:
                     type: string
                 following:
                     type: boolean
-        RegisterRequest:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/RegisterRequest_User'
-            description: RegisterRequest
-        RegisterRequest_User:
-            type: object
-            properties:
-                username:
-                    type: string
-                email:
-                    type: string
-                password:
-                    type: string
         Status:
             type: object
             properties:
@@ -743,39 +536,5 @@ components:
                     type: array
                     items:
                         type: string
-        UpdateUserRequest:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/UpdateUserRequest_User'
-            description: UpdateUserRequest
-        UpdateUserRequest_User:
-            type: object
-            properties:
-                email:
-                    type: string
-                image:
-                    type: string
-                bio:
-                    type: string
-        User:
-            type: object
-            properties:
-                user:
-                    $ref: '#/components/schemas/User_Data'
-            description: User
-        User_Data:
-            type: object
-            properties:
-                email:
-                    type: string
-                token:
-                    type: string
-                username:
-                    type: string
-                bio:
-                    type: string
-                image:
-                    type: string
 tags:
-    - name: RealWorld
+    - name: Article

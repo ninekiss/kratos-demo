@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package realworld.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "kratos-demo/api/realworld/v1;v1";
+
+// The greeting service definition.
+service User {
+  // Login
+  rpc Login(LoginRequest) returns (UserReply) {
+    option (google.api.http) = {
+      post: "/api/users/login"
+      body: "*"
+    };
+  }
+
+  // Register
+  rpc Register(RegisterRequest) returns (UserReply) {
+    option (google.api.http) = {
+      post: "/api/users"
+      body: "*"
+    };
+  }
+
+  // Get Current User
+  rpc GetCurrentUser(EmptyRequest) returns (UserReply) {
+    option (google.api.http) = {
+      get: "/api/user"
+    };
+  }
+
+  // Update User
+  rpc UpdateUser(UpdateUserRequest) returns (UserReply) {
+    option (google.api.http) = {
+      put: "/api/user"
+      body: "*"
+    };
+  }
+
+  // Get Profile
+  rpc GetProfile(GetProfileRequest) returns (Profile) {
+    option (google.api.http) = {
+      get: "/api/profiles/{username}"
+    };
+  }
+
+  // Follow User
+  rpc FollowUser(FollowUserRequest) returns (Profile) {
+    option (google.api.http) = {
+      post: "/api/profiles/{username}/follow"
+      body: "*"
+    };
+  }
+
+  // Unfollow User
+  rpc UnfollowUser(UnfollowUserRequest) returns (Profile) {
+    option (google.api.http) = {
+      delete: "/api/profiles/{username}/follow"
+    };
+  }
+}
+
+// User
+message UserReply {
+  message Data {
+    string email = 1;
+    string token = 2;
+    string username = 3;
+    string bio = 4;
+    string image = 5;
+  }
+  Data user = 1;
+}
+
+// Profile
+message Profile {
+  message Data {
+    string username = 1;
+    string bio = 2;
+    string image = 3;
+    bool following = 4;
+  }
+  Data profile = 1;
+}
+
+// LoginRequest
+message LoginRequest {
+  message User {
+    string email = 1;
+    string password = 2;
+  }
+  User user = 1;
+}
+
+// RegisterRequest
+message RegisterRequest {
+  message User {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+  }
+  User user = 1;
+}
+
+// UpdateUserRequest
+message UpdateUserRequest {
+  message User {
+    string email = 1;
+    string image = 2;
+    string bio = 3;
+  }
+  User user = 1;
+}
+
+// GetProfileRequest
+message GetProfileRequest {
+  string username = 1;
+}
+
+// FollowUserRequest
+message FollowUserRequest {
+  string username = 1;
+}
+
+// UnfollowUserRequest
+message UnfollowUserRequest {
+  string username = 1;
+}
+
+
+
+// EmptyRequest
+message EmptyRequest {
+}
+
+// EmptyReply
+message EmptyReply {
+}

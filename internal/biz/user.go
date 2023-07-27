@@ -9,17 +9,16 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"column:username" json:"username"`
-	Email    string `gorm:"column:email" json:"email"`
+	Username string `gorm:"column:username;unique" json:"username"`
+	Email    string `gorm:"column:email;unique" json:"email"`
 	Password string `gorm:"column:password" json:"password"`
-	Token    string `gorm:"column:token" json:"token"`
 	Bio      string `gorm:"column:bio" json:"bio"`
 	Image    string `gorm:"column:image" json:"image"`
 }
 
 type UserRepo interface {
 	Login(ctx context.Context, req *pb.LoginRequest) (*pb.UserReply, error)
-	//Register(ctx context.Context, user *User) error
+	Register(ctx context.Context, req *pb.RegisterRequest) (*pb.UserReply, error)
 	//ListUser(ctx context.Context) ([]*User, error)
 	//GetUser(ctx context.Context, email string) (*User, error)
 	//CreateUser(ctx context.Context, user *User) error
@@ -39,4 +38,9 @@ func NewUserUsecase(repo UserRepo, logger log.Logger) *UserUsecase {
 func (uc *UserUsecase) Login(ctx context.Context, req *pb.LoginRequest) (*pb.UserReply, error) {
 	uc.log.WithContext(ctx).Infof("login user: %s", req.User.Email)
 	return uc.repo.Login(ctx, req)
+}
+
+func (uc *UserUsecase) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.UserReply, error) {
+	uc.log.WithContext(ctx).Infof("login user: %s", req.User.Email)
+	return uc.repo.Register(ctx, req)
 }

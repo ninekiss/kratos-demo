@@ -4,7 +4,9 @@ go 1.18
 
 require (
 	github.com/go-kratos/kratos/v2 v2.6.2
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/wire v0.5.0
+	github.com/gorilla/handlers v1.5.1
 	go.uber.org/automaxprocs v1.5.1
 	google.golang.org/genproto v0.0.0-20220524023933-508584e28198
 	google.golang.org/grpc v1.46.2
@@ -14,6 +16,7 @@ require (
 )
 
 require (
+	github.com/felixge/httpsnoop v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-kratos/aegis v0.2.0 // indirect
 	github.com/go-logr/logr v1.2.3 // indirect
